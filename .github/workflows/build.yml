@@ -1,7 +1,14 @@
-on : push
+on :
+ push :
+  branches:
+  - 'main'
+  pull_request:
+  branches:
+  -main
+
 jobs: 
  Build:
-   runs-on: windows-latest
+   runs-on: ubuntu-latest
    steps:
-    -run: node --version
-    -run: npm --version
+    -name: Hello Step
+    -run: echo "Hello World"
