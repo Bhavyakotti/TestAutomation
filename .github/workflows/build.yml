@@ -11,7 +11,7 @@ on :
     CalledWorkflow_github_account:
       description: 'Github Account Owner'
       required: true
-      default: 'TestAutomation'
+      default: 'Bhavyakotti'
 
       CalledWorkflow_repo_github:
         description: 'Github Repository Name'
