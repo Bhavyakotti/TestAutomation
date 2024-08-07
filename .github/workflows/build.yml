@@ -1,14 +1,42 @@
-on :
- push :
-  branches:
-  - 'main'
-  pull_request:
-  branches:
-  -main
+name: CallerWorkFlow
 
-jobs: 
- Build:
-   runs-on: ubuntu-latest
-   steps:
-    -name: Hello Step
-    -run: echo "Hello World"
+on :
+ Workflow_dispatch: 
+  inputs:
+    Calledworkflow_name:
+      description: 'Called workflow name for triggering'
+      required: true
+      default: 'CalledWorkflow'
+    
+    CalledWorkflow_github_account:
+      description: 'Github Account Owner'
+      required: true
+      default: 'TestAutomation'
+
+      CalledWorkflow_repo_github:
+        description: 'Github Repository Name'
+        required: true
+        default: 'InvokeGitHubActionsCalled'
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      env:
+        pat_token: ${{ secretes.PAT_Token_GITHUB}}
+        parameter1: '6334378693'
+        parameter2: 'TestStringwithoutspace'
+      
+      steps:
+
+        -uses: actions/checkout@v3
+
+        -name: setup_python
+         uses: actions/setup-python@v2
+         with:
+          pyhton-version: 3.8
+
+        -name: Trigger the Wotkflow
+         run:
+          cd "$GITHUB_WORKSPACE/lambda_function/"
+          python $GITHUB_WORKSPACE/PythonScripts/lambda_function.py ${{env.pat_token}} ${{github.event.inputs.CalledWorkflow_github_account}} ${{github.event.inputs.CalledWorkflow_repo_github}} ${{github.event.inputs.CalledWorkflow_name}} ${{env.parameter1}} ${{env.parameter2}}
+
+ 
