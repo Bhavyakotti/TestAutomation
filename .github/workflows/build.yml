@@ -43,6 +43,6 @@ jobs:
         - name: Trigger the Workflow
           run:
            cd "$GITHUB_WORKSPACE/lambda_function/"
-           python $GITHUB_WORKSPACE/PythonScripts/lambda_function.py ${{env.pat_token}} ${{github.event.inputs.CalledWorkflow_github_account}} ${{github.event.inputs.CalledWorkflow_repo_github}} ${{github.event.inputs.CalledWorkflow_name}} ${{env.parameter1}} ${{env.parameter2}}
+           python $GITHUB_WORKSPACE/service/lambda_function.py ${{env.pat_token}} ${{github.event.inputs.CalledWorkflow_github_account}} ${{github.event.inputs.CalledWorkflow_repo_github}} ${{github.event.inputs.CalledWorkflow_name}} ${{env.parameter1}} ${{env.parameter2}}
 
  

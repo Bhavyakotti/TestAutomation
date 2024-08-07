@@ -25,7 +25,7 @@ def lambda_handler(Workflow_Name, parameter1, parameter2):
          }
     }
 
-    responseValue=requests.post(f"https://api.github.com/repos/{OWNER}/{REPO}/dispatches",json=data,headers=headers)
+    responseValue= requests.post(f"https://api.github.com/repos/{OWNER}/{REPO}/dispatches",json=data,headers=headers)
     print("The response message",responseValue.content)
 
     trigger_workflow(Workflow_Name,parameter1,parameter2)
