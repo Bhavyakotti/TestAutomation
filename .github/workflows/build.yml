@@ -1,7 +1,7 @@
 name: CallerWorkFlow
 
-on :
- Workflow_dispatch: 
+on:
+ workflow_dispatch: 
   inputs:
     Calledworkflow_name:
       description: 'Called workflow name for triggering'
@@ -13,30 +13,36 @@ on :
       required: true
       default: 'Bhavyakotti'
 
-      CalledWorkflow_repo_github:
+    CalledWorkflow_repo_github:
         description: 'Github Repository Name'
         required: true
         default: 'InvokeGitHubActionsCalled'
-  jobs:
+jobs:
     build:
       runs-on: ubuntu-latest
       env:
-        pat_token: ${{ secretes.PAT_Token_GITHUB}}
+        pat_token: ${{ secrets.PAT_Token_GITHUB}}
         parameter1: '6334378693'
         parameter2: 'TestStringwithoutspace'
       
       steps:
 
-        -uses: actions/checkout@v3
+        - uses: actions/checkout@v3
 
-        -name: setup_python
-         uses: actions/setup-python@v2
-         with:
-          pyhton-version: 3.8
+        - name: setup_python
+          uses: actions/setup-python@v2
+          with:
+            python-version: 3.8
 
-        -name: Trigger the Wotkflow
-         run:
-          cd "$GITHUB_WORKSPACE/lambda_function/"
-          python $GITHUB_WORKSPACE/PythonScripts/lambda_function.py ${{env.pat_token}} ${{github.event.inputs.CalledWorkflow_github_account}} ${{github.event.inputs.CalledWorkflow_repo_github}} ${{github.event.inputs.CalledWorkflow_name}} ${{env.parameter1}} ${{env.parameter2}}
+        - name: Install dependencies
+          run: |
+            cd "$GITHUB_WORKSPACE/service/"
+            python -m pip install --upgrade pip
+            pip install -r requirments.txt
+
+        - name: Trigger the Workflow
+          run:
+           cd "$GITHUB_WORKSPACE/lambda_function/"
+           python $GITHUB_WORKSPACE/PythonScripts/lambda_function.py ${{env.pat_token}} ${{github.event.inputs.CalledWorkflow_github_account}} ${{github.event.inputs.CalledWorkflow_repo_github}} ${{github.event.inputs.CalledWorkflow_name}} ${{env.parameter1}} ${{env.parameter2}}
 
  
